@@ -7,7 +7,14 @@ module ParseSberbankHtml
     end
     
     def parse_plain_text text
-      transfers = text.strip.split("\n").reject { |line| headers? line }
+      transfers = []
+      text.strip.split("\n").reject { |line| headers? line }.each do |transfer|
+        data = transfer.split("\t")
+        transfers.push(
+          title: data[0].strip,
+          date: data[1].strip,
+          amount: data[2].strip)
+      end
       { transfers: transfers }
     end
     

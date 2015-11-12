@@ -15,16 +15,13 @@ describe ParseSberbankHtml::TextParser do
 
       let(:result) { subject.parse text }
 
-      it { expect(result[:transfers]).to have(2).item }
-      it { expect(result[:transfers][0]).to eq({ 
-        title: "ATM RUS SANKT-PETERBU ATM 123456", 
-        date: "20.02", 
-        amount: "−3 000,00 руб." })
-      }
-      it { expect(result[:transfers][1]).to eq({ 
-        title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
-        date: "20.02", 
-        amount: "80 000,00 руб." })
+      it { expect(result[:transfers]).to match_array([
+        { title: "ATM RUS SANKT-PETERBU ATM 123456", 
+          date: "20.02", 
+          amount: "−3 000,00 руб." },
+        { title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
+          date: "20.02", 
+          amount: "80 000,00 руб." }])
       }
     end
     
@@ -36,16 +33,13 @@ describe ParseSberbankHtml::TextParser do
 
       let(:result) { subject.parse text }
 
-      it { expect(result[:transfers]).to have(2).item }
-      it { expect(result[:transfers][0]).to eq({ 
-        title: "ATM RUS SANKT-PETERBU ATM 239492", 
-        date: "20.02", 
-        amount: "−20 000,00 руб." })
-      }
-      it { expect(result[:transfers][1]).to eq({ 
-        title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
-        date: "20.02", 
-        amount: "+10 000,00 руб." })
+      it { expect(result[:transfers]).to match_array([
+        { title: "ATM RUS SANKT-PETERBU ATM 239492", 
+          date: "20.02", 
+          amount: "−20 000,00 руб." },
+        { title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
+          date: "20.02", 
+          amount: "+10 000,00 руб." }])
       }
     end
   end

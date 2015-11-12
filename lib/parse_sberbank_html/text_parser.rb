@@ -1,12 +1,7 @@
 # encoding: utf-8
 module ParseSberbankHtml
-  class Parser
-    def parse_html html
-      transfers = []
-      { transfers: transfers }
-    end
-    
-    def parse_plain_text text
+  class TextParser
+    def parse text
       transfers = []
       text.strip.split("\n").reject { |line| headers? line }.each do |transfer|
         data = transfer.split("\t")

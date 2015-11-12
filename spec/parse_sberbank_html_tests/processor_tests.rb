@@ -22,15 +22,18 @@ describe ParseSberbankHtml::Processor do
       amount: "−3 000,00 руб." }
     }
     
+    let(:debit_input) { { transfers: [ debit_transfer ] } }
+    let(:credit_input) { { transfers: [ credit_transfer ] } }
+    
     context 'when empty' do
       let(:result) { subject.process nil }
-      it { result[:transfers].should have(0).item }
+      it { expect(result[:transfers]).to have(0).item }
     end
     
     context 'when debit' do
-      let(:result) { subject.settings = settings; subject.process({ transfers: [ debit_transfer ] }) }
-      it { result[:transfers].should have(1).item }
-      it { result[:transfers][0].should == {
+      let(:result) { subject.settings = settings; subject.process debit_input }
+      it { expect(result[:transfers]).to have(1).item }
+      it { expect(result[:transfers][0]).to eq({
           title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA",
           date: Time.utc(2011, 07, 15, 0, 0, 0),
           amount: 80000.00,
@@ -39,14 +42,14 @@ describe ParseSberbankHtml::Processor do
           data: {
             title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA",
             date: "15.07", 
-            amount: "80 000,00 руб." } }
+            amount: "80 000,00 руб." } })
       }
     end
     
     context 'when credit' do
-      let(:result) { subject.settings = settings; subject.process({ transfers: [ credit_transfer ] }) }
-      it { result[:transfers].should have(1).item }
-      it { result[:transfers][0].should == {
+      let(:result) { subject.settings = settings; subject.process credit_input }
+      it { expect(result[:transfers]).to have(1).item }
+      it { expect(result[:transfers][0]).to eq({
           title: "ATM RUS SANKT-PETERBU ATM 123456",
           date: Time.utc(2011, 02, 20, 0, 0, 0),
           amount: 3000.00,
@@ -55,7 +58,7 @@ describe ParseSberbankHtml::Processor do
           data: {
             title: "ATM RUS SANKT-PETERBU ATM 123456",
             date: "20.02", 
-            amount: "−3 000,00 руб." } }
+            amount: "−3 000,00 руб." } })
       }
     end
   end

@@ -5,7 +5,7 @@ describe ParseSberbankHtml::TextParser do
   describe '#parse' do
     context 'when empty' do
       let(:result) { subject.parse '' }
-      it { result[:transfers].length.should == 0 }
+      it { expect(result[:transfers]).to have(0).item }
     end
     
     context 'when no headers' do
@@ -15,16 +15,16 @@ describe ParseSberbankHtml::TextParser do
 
       let(:result) { subject.parse text }
 
-      it { result[:transfers].length.should == 2 }
-      it { result[:transfers][0].should == { 
+      it { expect(result[:transfers]).to have(2).item }
+      it { expect(result[:transfers][0]).to eq({ 
         title: "ATM RUS SANKT-PETERBU ATM 123456", 
         date: "20.02", 
-        amount: "−3 000,00 руб." }
+        amount: "−3 000,00 руб." })
       }
-      it { result[:transfers][1].should == { 
+      it { expect(result[:transfers][1]).to eq({ 
         title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
         date: "20.02", 
-        amount: "80 000,00 руб." }
+        amount: "80 000,00 руб." })
       }
     end
     
@@ -36,16 +36,16 @@ describe ParseSberbankHtml::TextParser do
 
       let(:result) { subject.parse text }
 
-      it { result[:transfers].length.should == 2 }
-      it { result[:transfers][0].should == { 
+      it { expect(result[:transfers]).to have(2).item }
+      it { expect(result[:transfers][0]).to eq({ 
         title: "ATM RUS SANKT-PETERBU ATM 239492", 
         date: "20.02", 
-        amount: "−20 000,00 руб." }
+        amount: "−20 000,00 руб." })
       }
-      it { result[:transfers][1].should == { 
+      it { expect(result[:transfers][1]).to eq({ 
         title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
         date: "20.02", 
-        amount: "+10 000,00 руб." }
+        amount: "+10 000,00 руб." })
       }
     end
   end

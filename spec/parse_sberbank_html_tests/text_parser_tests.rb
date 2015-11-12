@@ -13,14 +13,16 @@ describe ParseSberbankHtml::TextParser do
       text = "
   ATM RUS SANKT-PETERBU ATM 123456	20.02 	−3 000,00 руб.	 
   BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA	20.02 	80 000,00 руб."
-      
-      it { parser.parse(text)[:transfers].length.should == 2 }
-      it { parser.parse(text)[:transfers][0].should == { 
+
+      subject(:result) { parser.parse(text) }
+
+      it { result[:transfers].length.should == 2 }
+      it { result[:transfers][0].should == { 
         title: "ATM RUS SANKT-PETERBU ATM 123456", 
         date: "20.02", 
         amount: "−3 000,00 руб." }
       }
-      it { parser.parse(text)[:transfers][1].should == { 
+      it { result[:transfers][1].should == { 
         title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
         date: "20.02", 
         amount: "80 000,00 руб." }
@@ -33,13 +35,15 @@ describe ParseSberbankHtml::TextParser do
   ATM RUS SANKT-PETERBU ATM 239492	20.02	−20 000,00 руб.
   BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA	20.02	+10 000,00 руб."
 
-      it { parser.parse(text)[:transfers].length.should == 2 }
-      it { parser.parse(text)[:transfers][0].should == { 
+      subject(:result) { parser.parse(text) }
+
+      it { result[:transfers].length.should == 2 }
+      it { result[:transfers][0].should == { 
         title: "ATM RUS SANKT-PETERBU ATM 239492", 
         date: "20.02", 
         amount: "−20 000,00 руб." }
       }
-      it { parser.parse(text)[:transfers][1].should == { 
+      it { result[:transfers][1].should == { 
         title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 
         date: "20.02", 
         amount: "+10 000,00 руб." }

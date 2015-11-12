@@ -3,13 +3,33 @@ require 'parse_sberbank_html'
 require 'spec_helper'
 
 describe ParseSberbankHtml::Processor do
+  let(:settings) { {
+    today: Time.utc(2011, 10, 10, 0, 0, 0),
+    currencies: { "руб." => :rub },
+    minus_signs: [ '-', '−' ],
+    thousands_separators: [ ' ' ] }
+  }
+  
+  describe '#get_amount_type' do
+    context 'when debit' do
+      let(:result) { subject.settings = settings; subject.get_amount_type "80 000,00 руб." }
+      it { expect(result).to match_array([:debit, "80 000,00 руб."]) }
+    end
+    
+    context 'when credit' do
+      let(:result) { subject.settings = settings; subject.get_amount_type "−3 000,00 руб." }
+      it { expect(result).to match_array([:credit, "3 000,00 руб."]) }
+    end
+  end
+  
+  describe '#get_amount_currency' do
+    context 'when rub.' do
+      let(:result) { subject.settings = settings; subject.get_amount_currency "80 000,00 руб." }
+      it { expect(result).to match_array([:rub, "80 000,00"]) }
+    end
+  end
+  
   describe '#process' do
-    let(:settings) { {
-      today: Time.utc(2011, 10, 10, 0, 0, 0),
-      currencies: { "руб." => :rub },
-      minus_signs: [ '-', '−' ],
-      thousands_separators: [ ' ' ] }
-    }
     
     let(:debit_transfer) { { 
       title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA", 

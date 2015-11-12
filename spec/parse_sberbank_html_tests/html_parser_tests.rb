@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'parse_sberbank_html'
+require 'spec_helper'
 
 describe ParseSberbankHtml::HtmlParser do
   describe '#parse' do

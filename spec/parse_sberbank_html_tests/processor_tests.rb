@@ -2,7 +2,7 @@
 require 'parse_sberbank_html'
 require 'spec_helper'
 
-describe ParseSberbankHtml::Processor do
+describe ParseSberbankHtml::TextProcessor do
   let(:settings) { {
     today: Time.utc(2011, 10, 10, 0, 0, 0),
     currencies: { "руб." => :rub },

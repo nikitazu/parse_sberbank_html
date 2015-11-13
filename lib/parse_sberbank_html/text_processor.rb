@@ -1,6 +1,6 @@
 # encoding: utf-8
 module ParseSberbankHtml
-  class Processor
+  class TextProcessor
     attr_accessor :settings
     
     def get_amount_type value
@@ -47,5 +47,5 @@ module ParseSberbankHtml
       end
       { transfers: transfers }
     end
-  end # Processor
+  end # TextProcessor
 end # ParseSberbankHtml

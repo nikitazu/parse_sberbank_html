@@ -36,25 +36,4 @@ module ParseSberbankHtml
       { transfers: transfers }
     end
   end # Processor
-  
-  class TextProcessor < Processor
-    def initialize
-      @formats = {
-        date: ParseSberbankHtml::Formats::TextDateFormat.new,
-        currency: ParseSberbankHtml::Formats::TextCurrencyFormat.new,
-        type: ParseSberbankHtml::Formats::TextTypeFormat.new
-      }
-    end
-  end
-  
-  class HtmlProcessor < Processor
-    def initialize
-      @formats = {
-        date: ParseSberbankHtml::Formats::HtmlDateFormat.new,
-        currency: ParseSberbankHtml::Formats::TextCurrencyFormat.new,
-        type: ParseSberbankHtml::Formats::TextTypeFormat.new
-      }
-    end
-  end
-  
 end # ParseSberbankHtml

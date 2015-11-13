@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'parse_sberbank_html'
 
-describe ParseSberbankHtml::Formats::TextCurrencyFormat do
+describe ParseSberbankHtml::Formats::CurrencyFormat do
   describe '#parse' do
     let(:settings) { { currencies: { "руб." => :rub } } }
     

@@ -4,8 +4,8 @@ module ParseSberbankHtml
     def initialize
       @formats = {
         date: ParseSberbankHtml::Formats::TextDateFormat.new,
-        currency: ParseSberbankHtml::Formats::TextCurrencyFormat.new,
-        type: ParseSberbankHtml::Formats::TextTypeFormat.new
+        currency: ParseSberbankHtml::Formats::CurrencyFormat.new,
+        type: ParseSberbankHtml::Formats::AmountTypeFormat.new
       }
     end
   end

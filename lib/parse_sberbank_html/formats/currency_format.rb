@@ -1,7 +1,7 @@
 # encoding: utf-8
 module ParseSberbankHtml
   module Formats
-    class TextCurrencyFormat
+    class CurrencyFormat
       attr_accessor :settings
       
       def parse str

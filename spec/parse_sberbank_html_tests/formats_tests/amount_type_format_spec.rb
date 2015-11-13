@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'parse_sberbank_html'
 
-describe ParseSberbankHtml::Formats::TextTypeFormat do
+describe ParseSberbankHtml::Formats::AmountTypeFormat do
   describe '#parse' do
     let(:settings) { { minus_signs: [ '-', '−' ] } }
     

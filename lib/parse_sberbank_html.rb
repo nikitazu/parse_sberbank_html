@@ -5,11 +5,8 @@ require "parse_sberbank_html/formats/currency_format"
 require "parse_sberbank_html/formats/html_date_format"
 require "parse_sberbank_html/formats/text_date_format"
 
-require "parse_sberbank_html/processor"
-require "parse_sberbank_html/html_processor"
-require "parse_sberbank_html/text_processor"
-
 require "parse_sberbank_html/html_parser"
+require "parse_sberbank_html/processor"
 require "parse_sberbank_html/text_parser"
 
 module ParseSberbankHtml

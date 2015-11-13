@@ -1,6 +1,6 @@
 # encoding: utf-8
 module ParseSberbankHtml
-  class TextProcessor
+  class HtmlProcessor
     attr_accessor :settings
     
     def get_amount_type value
@@ -20,9 +20,8 @@ module ParseSberbankHtml
     
     def get_date value
       year = self.settings[:today].year
-      date_data = value.split(".")
-      date_day = date_data[0].to_i
-      date_month = date_data[1].to_i
+      date_day = value[0, 2].to_i
+      date_month = ['ЯНВ','ФЕВ','МАР','АПР','МАЙ','ИЮН','ИЮЛ','АВГ','СЕН','ОКТ','НОЯ','ДЕК'].find_index(value[2, 3]) + 1
       return Time.utc(year, date_month, date_day, 0, 0, 0)
     end
     
@@ -47,5 +46,5 @@ module ParseSberbankHtml
       end
       { transfers: transfers }
     end
-  end # TextProcessor
+  end # HtmlProcessor
 end # ParseSberbankHtml

@@ -3,36 +3,24 @@ module ParseSberbankHtml
   class TextProcessor
     attr_accessor :settings
     
-    def get_amount_type value
-      if self.settings[:minus_signs].any? { |s| not value.sub!(s, '').nil? } then
-        return :credit, value
-      else
-        return :debit, value
-      end
-    end
-    
-    def get_amount_currency value
-      currencies = self.settings[:currencies]
-      amount_currency_key = currencies.keys.select { |k| value.include? k }.first
-      amount_currency = currencies[amount_currency_key]
-      return amount_currency, value.delete(amount_currency_key).strip
-    end
-    
-    def get_date value
-      year = self.settings[:today].year
-      date_data = value.split(".")
-      date_day = date_data[0].to_i
-      date_month = date_data[1].to_i
-      return Time.utc(year, date_month, date_day, 0, 0, 0)
+    def initialize
+      @formats = {
+        date: ParseSberbankHtml::Formats::TextDateFormat.new,
+        currency: ParseSberbankHtml::Formats::TextCurrencyFormat.new,
+        type: ParseSberbankHtml::Formats::TextTypeFormat.new
+      }
     end
     
     def process data
+      @formats[:type].settings = self.settings
+      @formats[:currency].settings = self.settings
+      @formats[:date].settings = self.settings
       transfers = []
       unless data.nil? or data[:transfers].nil?
         data[:transfers].each do |transfer|
-          date = self.get_date transfer[:date]
-          amount_type, amount_data = self.get_amount_type transfer[:amount].strip
-          amount_currency, amount_data = self.get_amount_currency amount_data
+          date = @formats[:date].parse transfer[:date]
+          amount_type, amount_data = @formats[:type].parse transfer[:amount].strip
+          amount_currency, amount_data = @formats[:currency].parse amount_data
           self.settings[:thousands_separators].each { |s| amount_data.delete! s }
           amount_value = amount_data.to_f
 

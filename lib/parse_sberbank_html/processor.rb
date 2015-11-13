@@ -3,11 +3,7 @@ module ParseSberbankHtml
   class Processor
     def initialize
       @settings = nil
-      @formats = {
-        date: ParseSberbankHtml::Formats::HtmlDateFormat.new,
-        currency: ParseSberbankHtml::Formats::TextCurrencyFormat.new,
-        type: ParseSberbankHtml::Formats::TextTypeFormat.new
-      }
+      @formats = nil
     end
     
     def settings

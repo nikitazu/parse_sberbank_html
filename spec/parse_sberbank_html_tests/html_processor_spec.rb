@@ -10,30 +10,6 @@ describe ParseSberbankHtml::HtmlProcessor do
     thousands_separators: [ ' ' ] }
   }
   
-  describe '#get_amount_type' do
-    context 'when debit' do
-      let(:result) { subject.settings = settings; subject.get_amount_type "80 000,00 RUR" }
-      it { expect(result).to match_array([:debit, "80 000,00 RUR"]) }
-    end
-    
-    context 'when credit' do
-      let(:result) { subject.settings = settings; subject.get_amount_type "3 000,00CR RUR" }
-      it { expect(result).to match_array([:credit, "3 000,00 RUR"]) }
-    end
-  end
-  
-  describe '#get_amount_currency' do
-    context 'when rub.' do
-      let(:result) { subject.settings = settings; subject.get_amount_currency "80 000,00 RUR" }
-      it { expect(result).to match_array([:rub, "80 000,00"]) }
-    end
-  end
-  
-  describe '#get_date' do
-    let(:result) { subject.settings = settings; subject.get_date "19АВГ" }
-    it { expect(result).to eq(Time.utc(2011, 8, 19, 0, 0, 0)) }
-  end
-  
   describe '#process' do
     let(:debit_transfer) { { 
       title: "VANIL DKH SANKT-PETERBURG RUS", 

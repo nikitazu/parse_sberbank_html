@@ -1,4 +1,5 @@
 require "parse_sberbank_html/version"
+require "parse_sberbank_html/formats/html_date_format"
 require "parse_sberbank_html/formats/text_currency_format"
 require "parse_sberbank_html/formats/text_date_format"
 require "parse_sberbank_html/formats/text_type_format"

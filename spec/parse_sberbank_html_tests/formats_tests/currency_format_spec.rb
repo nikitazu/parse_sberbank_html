@@ -5,14 +5,19 @@ describe ParseSberbankHtml::Formats::CurrencyFormat do
   describe '#parse' do
     let(:settings) { { currencies: { "руб." => :rub } } }
     
+    context 'when nil' do
+      let(:result) { subject.settings = settings; subject.parse nil }
+      it { expect(result).to eq(nil) }
+    end
+    
     context 'when empty' do
       let(:result) { subject.settings = settings; subject.parse '' }
-      it { expect(result).to match_array([nil, '']) }
+      it { expect(result).to eq(nil) }
     end
     
     context 'when not empty' do
       let(:result) { subject.settings = settings; subject.parse "80 000,00 руб." }
-      it { expect(result).to match_array([:rub, "80 000,00"]) }
+      it { expect(result).to eq(:rub) }
     end
   end
 end

@@ -4,6 +4,7 @@ module ParseSberbankHtml
     def initialize
       @settings = nil
       @formats = nil
+      @converters = []
     end
     
     def settings
@@ -13,48 +14,59 @@ module ParseSberbankHtml
     def settings= value
       @settings = value
       @formats.values.each {|k| k.settings = value }
+      create_converter source: :title, target: :title, formats: @formats
+      create_converter source: :date, target: :date, formats: @formats
+      create_converter source: :amount, target: :type, formats: @formats
+      create_converter source: :amount, target: :currency, formats: @formats
+      create_converter source: :amount, target: :amount, formats: @formats
+    end
+    
+    def create_converter settings
+      x = DataConverter.new
+      x.settings = settings
+      @converters << x
     end
     
     def process data
       transfers = []
       unless data.nil? or data[:transfers].nil?
         data[:transfers].each do |transfer|
-          date = @formats[:date].parse transfer[:date]
-          amount_type, amount_data = @formats[:type].parse transfer[:amount].strip
-          amount_currency, amount_data = @formats[:currency].parse amount_data
-          @settings[:thousands_separators].each { |s| amount_data.delete! s }
-          amount_value = amount_data.to_f
-
-          transfers.push(
-            title: transfer[:title],
-            date: date,
-            amount: amount_value,
-            currency: amount_currency,
-            type: amount_type,
-            data: transfer)
+          tr = { }
+          @converters.each do |c|
+            c.convert transfer, tr
+            tr[:data] = transfer
+          end
+          transfers.push tr
         end
       end
       { transfers: transfers }
     end
+    
   end # Processor
   
   class HtmlProcessor < Processor
     def initialize
+      super
       @formats = {
-        date: ParseSberbankHtml::Formats::HtmlDateFormat.new,
-        currency: ParseSberbankHtml::Formats::CurrencyFormat.new,
-        type: ParseSberbankHtml::Formats::AmountTypeFormat.new
+        title: Formats::CopyFormat.new,
+        date: Formats::HtmlDateFormat.new,
+        currency: Formats::CurrencyFormat.new,
+        type: Formats::AmountTypeFormat.new,
+        amount: Formats::DecimalFormat.new,
       }
     end
-  end
+  end # HtmlProcessor
   
   class TextProcessor < Processor
     def initialize
+      super
       @formats = {
-        date: ParseSberbankHtml::Formats::TextDateFormat.new,
-        currency: ParseSberbankHtml::Formats::CurrencyFormat.new,
-        type: ParseSberbankHtml::Formats::AmountTypeFormat.new
+        title: Formats::CopyFormat.new,
+        date: Formats::TextDateFormat.new,
+        currency: Formats::CurrencyFormat.new,
+        type: Formats::AmountTypeFormat.new,
+        amount: Formats::DecimalFormat.new,
       }
     end
-  end
+  end # TextProcessor
 end # ParseSberbankHtml

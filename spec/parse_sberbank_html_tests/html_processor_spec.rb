@@ -32,19 +32,21 @@ describe ParseSberbankHtml::HtmlProcessor do
     
     context 'when not empty' do
       let(:result) { subject.settings = settings; subject.process input }
-      it { expect(result[:transfers]).to match_array([
-        { title: "VANIL DKH SANKT-PETERBURG RUS",
+      it { expect(result[:transfers][0]).to eq({
+          title: "VANIL DKH SANKT-PETERBURG RUS",
           date: Time.utc(2011, 8, 19, 0, 0, 0),
           amount: 123.00,
           currency: :rub,
           type: :debit,
-          data: debit_transfer },
-        { title: "POS GASTRONOM 811 2 SANKT-PETERBU RUS",
+          data: debit_transfer })
+      }
+      it { expect(result[:transfers][1]).to eq({
+          title: "POS GASTRONOM 811 2 SANKT-PETERBU RUS",
           date: Time.utc(2011, 8, 22, 0, 0, 0),
           amount: 4567.89,
           currency: :rub,
           type: :credit,
-          data: credit_transfer }])
+          data: credit_transfer })
       }
     end
   end

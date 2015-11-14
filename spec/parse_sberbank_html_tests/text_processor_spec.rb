@@ -32,19 +32,21 @@ describe ParseSberbankHtml::TextProcessor do
     
     context 'when not empty' do
       let(:result) { subject.settings = settings; subject.process input }
-      it { expect(result[:transfers]).to match_array([
-        { title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA",
+      it { expect(result[:transfers][0]).to eq({
+          title: "BP Acct - Card RUS SBERBANK ONL@IN VKLAD-KARTA",
           date: Time.utc(2011, 07, 15, 0, 0, 0),
           amount: 80000.00,
           currency: :rub,
           type: :debit,
-          data: debit_transfer },
-        { title: "ATM RUS SANKT-PETERBU ATM 123456",
+          data: debit_transfer })
+      }
+      it { expect(result[:transfers][1]).to eq({
+          title: "ATM RUS SANKT-PETERBU ATM 123456",
           date: Time.utc(2011, 02, 20, 0, 0, 0),
           amount: 3000.00,
           currency: :rub,
           type: :credit,
-          data: credit_transfer }])
+          data: credit_transfer })
       }
     end
   end

@@ -11,6 +11,7 @@ require "parse_sberbank_html/data_converter"
 require "parse_sberbank_html/html_parser"
 require "parse_sberbank_html/processor"
 require "parse_sberbank_html/text_parser"
+require "parse_sberbank_html/transfers_unificator"
 
 module ParseSberbankHtml
   # Your code goes here...

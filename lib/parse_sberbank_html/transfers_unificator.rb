@@ -3,16 +3,16 @@ module ParseSberbankHtml
   class TransfersUnificator
     attr_accessor :settings
     
-    def unify transfers
+    def unify data
       result = { transfers: [] }
-      unless transfers.nil?
+      unless data.nil? or data[:transfers].nil?
         regexes = []
         accounts = []
         self.settings[:accounts].each do |key, value|
           regexes.push Regexp.new(key, Regexp::IGNORECASE)
           accounts.push value
         end
-        transfers.each do |transfer|
+        data[:transfers].each do |transfer|
           index = 0
           target = nil
           regexes.any? do |re|

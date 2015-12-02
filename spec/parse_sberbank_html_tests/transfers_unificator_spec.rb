@@ -11,12 +11,14 @@ describe ParseSberbankHtml::TransfersUnificator do
     let(:settings) {
       { accounts: accounts }
     }
-    let(:transfers) {
-      [ { title: 'Fooz' },
+    let(:input) {
+      { transfers: [ 
+        { title: 'Fooz' },
         { title: 'Rooh' },
         { title: 'Daah' },
         { title: 'Fooz' },
         { title: 'Oops' }, ]
+      }
     }
     
     context 'when empty' do
@@ -25,7 +27,7 @@ describe ParseSberbankHtml::TransfersUnificator do
     end
     
     context 'when not empty' do
-      let(:result) { subject.settings = settings; subject.unify transfers }
+      let(:result) { subject.settings = settings; subject.unify input }
       it { expect(result[:transfers][0]).to eq({
           target: 'Debit Card',
           transfer: { title: 'Fooz' }
